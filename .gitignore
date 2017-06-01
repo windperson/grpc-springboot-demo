@@ -173,3 +173,4 @@ gradle-app.setting
 
 # End of https://www.gitignore.io/api/java,code,gradle,eclipse,java-web,jetbrains
 0
+src/main/protoGen/
