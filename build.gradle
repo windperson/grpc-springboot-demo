@@ -89,3 +89,21 @@ dependencyManagement {
         mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
     }
 }
+
+
+//remove redundant compile check on generated code.
+eclipse {
+	classpath {
+		file {
+			whenMerged {
+				entries.each {
+					source ->
+					if (source.kind == 'src' && source.path.contains('protoGen')) {
+						source.entryAttributes['ignore_optional_problems'] = 'true'
+					}
+
+				}
+			}
+		}
+	}
+}
