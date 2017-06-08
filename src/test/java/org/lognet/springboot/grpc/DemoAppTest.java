@@ -31,27 +31,19 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
  * Created by alexf on 28-Jan-16.
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {DemoApp.class,TestConfig.class}, webEnvironment = DEFINED_PORT)
+@SpringBootTest(classes = {DemoApp.class, TestConfig.class}, webEnvironment = DEFINED_PORT)
 public class DemoAppTest {
-
     private ManagedChannel channel;
 
-    @Rule
-    public OutputCapture outputCapture = new OutputCapture();
+    @Rule public OutputCapture outputCapture = new OutputCapture();
 
-    @Autowired
-    @Qualifier("globalInterceptor")
-    private  ServerInterceptor globalInterceptor;
+    @Autowired @Qualifier("globalInterceptor") private ServerInterceptor globalInterceptor;
 
-    @Autowired
-    private ApplicationContext context;
-
+    @Autowired private ApplicationContext context;
 
     @Before
     public void setup() {
-        channel = ManagedChannelBuilder.forAddress("localhost", 6565)
-            .usePlaintext(true)
-            .build();
+        channel = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext(true).build();
     }
 
     @After
@@ -61,53 +53,55 @@ public class DemoAppTest {
 
     @Test
     public void simpleGreeting() throws ExecutionException, InterruptedException {
-
-
-        String name ="John";
+        String name = "John";
         final GreeterGrpc.GreeterFutureStub greeterFutureStub = GreeterGrpc.newFutureStub(channel);
-        final GreeterOuterClass.HelloRequest helloRequest =GreeterOuterClass.HelloRequest.newBuilder().setName(name).build();
+        final GreeterOuterClass.HelloRequest helloRequest =
+            GreeterOuterClass.HelloRequest.newBuilder().setName(name).build();
         final String reply = greeterFutureStub.sayHello(helloRequest).get().getMessage();
         assertNotNull(reply);
-        assertTrue(String.format("Replay should contain name '%s'",name),reply.contains(name));
-
+        assertTrue(String.format("Replay should contain name '%s'", name), reply.contains(name));
     }
 
     @Test
     public void interceptorsTest() throws ExecutionException, InterruptedException {
-
         GreeterGrpc.newFutureStub(channel)
-                .sayHello(GreeterOuterClass.HelloRequest.newBuilder().setName("name").build())
-                .get().getMessage();
+            .sayHello(GreeterOuterClass.HelloRequest.newBuilder().setName("name").build())
+            .get()
+            .getMessage();
 
         CalculatorGrpc.newFutureStub(channel)
-                .calculate(CalculatorOuterClass.CalculatorRequest.newBuilder().setNumber1(1).setNumber2(1).build())
-                .get().getResult();
+            .calculate(CalculatorOuterClass.CalculatorRequest.newBuilder()
+                           .setNumber1(1)
+                           .setNumber2(1)
+                           .build())
+            .get()
+            .getResult();
 
         // global interceptor should be invoked once on each service
-        Mockito.verify(globalInterceptor,Mockito.times(2)).interceptCall(Mockito.any(),Mockito.any(),Mockito.any());
+        Mockito.verify(globalInterceptor, Mockito.times(2))
+            .interceptCall(Mockito.any(), Mockito.any(), Mockito.any());
 
-
-        // log interceptor should be invoked only on GreeterService and not CalculatorService
-        outputCapture.expect(CoreMatchers.containsString(GreeterGrpc.METHOD_SAY_HELLO.getFullMethodName()));
-        outputCapture.expect(CoreMatchers.not(CoreMatchers.containsString(CalculatorGrpc.METHOD_CALCULATE.getFullMethodName())));
-
+        // log interceptor should be invoked only on GreeterService and not
+        // CalculatorService
+        outputCapture.expect(
+            CoreMatchers.containsString(GreeterGrpc.METHOD_SAY_HELLO.getFullMethodName()));
+        outputCapture.expect(CoreMatchers.not(
+            CoreMatchers.containsString(CalculatorGrpc.METHOD_CALCULATE.getFullMethodName())));
     }
 
-        @Test
+    @Test
     public void actuatorTest() throws ExecutionException, InterruptedException {
         final TestRestTemplate template = new TestRestTemplate();
 
-        ResponseEntity<String> response = template.getForEntity("http://localhost:8080/env", String.class);
+        ResponseEntity<String> response =
+            template.getForEntity("http://localhost:8080/env", String.class);
         assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-
     @Test
-    public void testDefaultConfigurer(){
+    public void testDefaultConfigurer() {
         Assert.assertEquals("Default configurer should be picked up",
-                context.getBean(GRpcServerBuilderConfigurer.class).getClass(),
-                GRpcServerBuilderConfigurer.class);
+            context.getBean(GRpcServerBuilderConfigurer.class).getClass(),
+            GRpcServerBuilderConfigurer.class);
     }
-
-
 }

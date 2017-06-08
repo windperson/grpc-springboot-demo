@@ -19,30 +19,17 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
  * Created by alexf on 28-Jan-16.
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {DemoApp.class },webEnvironment = NONE
-        ,properties = {"spring.aop.proxy-target-class=true","grpc.port=6666"}
-)
+@SpringBootTest(classes = {DemoApp.class}, webEnvironment = NONE,
+    properties = {"spring.aop.proxy-target-class=true", "grpc.port=6666"})
 @ActiveProfiles(profiles = {"aopTest"})
 public class DemoAppTestAop {
+    @Autowired private GreeterService greeterService;
 
-
-    @Autowired
-    private GreeterService greeterService;
-
-    @Autowired
-    private DemoApp.CalculatorService calculatorService;
-
-
+    @Autowired private DemoApp.CalculatorService calculatorService;
 
     @Test
     public void simpleAopTest() throws ExecutionException, InterruptedException {
-
         assertTrue(AopUtils.isAopProxy(greeterService));
         assertTrue(AopUtils.isAopProxy(calculatorService));
-
     }
-
-
-
-
 }

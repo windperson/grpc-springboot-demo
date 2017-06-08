@@ -5,10 +5,10 @@ buildscript {
         springBootVersion = "1.5.3.RELEASE"
         protobufVersion = "3.3.0"
     }
-    repositories { 
+    repositories {
         mavenCentral()
         maven { url 'http://repo.spring.io/plugins-release' }
-        maven { url "https://plugins.gradle.org/m2/"} 
+        maven { url "https://plugins.gradle.org/m2/"}
     }
     dependencies { classpath 'com.google.protobuf:protobuf-gradle-plugin:0.8.1' }
     dependencies { classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}" }
@@ -79,14 +79,14 @@ protobuf {
 
 task cleanProtoGen{
     doFirst{
-           delete("$projectDir/src/main/protoGen")
+      delete("$projectDir/src/main/protoGen")
     }
 }
 clean.dependsOn cleanProtoGen
 
 dependencyManagement {
     imports {
-        mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
+      mavenBom "org.springframework.boot:spring-boot-starter-parent:${springBootVersion}"
     }
 }
 
