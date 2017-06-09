@@ -11,12 +11,23 @@ gRPC server/client端官方函式庫支援多種程式語言，雖然各種程�
 
 * **Channel** ：一層更高階包裝 **連線到gRPC Server** 的物件，可設定連線各種設定，在跑單元測試時有些語言的函式庫有提供"*in-Process* channel"以方便寫&執行測試。  
 [http://www.grpc.io/docs/guides/concepts.html#channels](http://www.grpc.io/docs/guides/concepts.html#channels)
-* **Deadline/Timeout** ：定義gRPC服務呼叫可容許執行的時間，**Deadline** 表示總共可容許執行的時間完畢後的**時刻** ，**Timeout** 表示總共可容許執行多少**時間**  
-[http://www.grpc.io/docs/guides/concepts.html#deadlinestimeouts](http://www.grpc.io/docs/guides/concepts.html#deadlinestimeouts)
-* **Metadata** ：
-* **Streaming** :
-* Context ：
-* Interceptor ：
+
+* **Deadline/Timeout** ：定義gRPC服務呼叫可容許執行的時間，**Deadline** 表示總共可容許執行的時間完畢後的**時刻** ，**Timeout** 表示總共可容許執行多少**時間**。  
+[http://www.grpc.io/docs/guides/concepts.html#deadlinestimeouts](http://www.grpc.io/docs/guides/concepts.html#deadlinestimeouts)  
+[敘述Deadline/Timeout概念的投影片](https://www.slideshare.net/borisovalex/enabling-googley-microservices-with-http2-and-grpc/132?src=clipshare)
+
+* **Metadata**/Context ：一種伴隨在gRPC呼叫中夾帶的key-value資料結構，常用來做儲存gRPC呼叫時使用者驗證資料，或是跨不同gRPC方法呼叫時傳遞額外資料。  
+[http://www.grpc.io/docs/guides/concepts.html#metadata](http://www.grpc.io/docs/guides/concepts.html#metadata)
+
+* **Streaming** : gRPC和HTTP REST API呼叫不同的獨特新功能，可由server端或client端發出連續的資料流讓另一端接收，也可同時雙向傳送。  
+[http://www.grpc.io/docs/guides/concepts.html#server-streaming-rpc](http://www.grpc.io/docs/guides/concepts.html#server-streaming-rpc)  
+[gRPC的那些事 - streaming](http://colobu.com/2017/04/06/dive-into-gRPC-streaming/)
+
+* Interceptor ：類似一些程式語言的Web API框架中的 *filter* / *middleware* 的概念，可在client端發送gRPC呼叫前，或是server端真正執行gRPC定義的服務實做前執行客製程式碼，可用於功能：使用者認證、傳輸資料壓縮加解密。  
+[gRPC的那些事 - interceptor](http://colobu.com/2017/04/17/dive-into-gRPC-interceptor/)  
+Java的Interceptor實作範例：  
+[client interceptor](http://www.programcreek.com/java-api-examples/index.php?api=io.grpc.ClientInterceptor)  
+[server interceptor](http://www.programcreek.com/java-api-examples/index.php?api=io.grpc.ServerInterceptor)
 
 ## Work flow ##
 
@@ -42,10 +53,18 @@ gRPC server/client端官方函式庫支援多種程式語言，雖然各種程�
     1. 在呼叫服務前可能需要做一些呼叫前的設定和參數組態物件的建立，由gRPC在該程式語言所提供的函式庫資源而定。
     2. 使用步驟3.產生的gRPC呼叫用Proxy物件或Stub方法，呼叫gRPC服務，
 
-以下用Java的[gRPC-Java]做詳細介紹。
+以下用Java的[gRPC-Java](http://github.com/grpc/grpc-java)做詳細介紹。
 
 ## gRPC-Java ##
 
+Google官方提供的Java程式語言使用gRPC函式庫，支援Oracle Java及Android client端Java使用：  
+[http://github.com/grpc/grpc-java](http://github.com/grpc/grpc-java)
+
+
+## grpc-spring-boot-starter ##
+
+配合Spring Boot的gRPC框架，  
+原始碼：[http://github.com/LogNet/grpc-spring-boot-starter](http://github.com/LogNet/grpc-spring-boot-starter)
 
 
 ## 參考資料 ##
@@ -55,6 +74,9 @@ gRPC: The Story of Microservices at Square
 
 gRPC 101 for Java Developers  
 [https://www.youtube.com/watch?v=5tmPvSe7xXQ](https://www.youtube.com/watch?v=5tmPvSe7xXQ)
+
+gRPC: A High Performance, Modern RPC System  
+[http://www.infoq.com/presentations/grpc](http://www.infoq.com/presentations/grpc)
 
 gRPC Design Principle  
 [http://www.grpc.io/blog/principles](http://www.grpc.io/blog/principles)
