@@ -8,7 +8,7 @@ subgraph server
   serverApp(gRPC Service implementation)
   serverApp --- SDL("Generated gRPC Service/ ProtoBuff Message Defintion")
   Interceptor -.-> serverApp
-  subgraph serverLib
+  subgraph server Lib
     SDL
     gRPCserverHandler(Server gRPC Call Hander) --> Interceptor
     ServerTransport["Transport(Netty Web Server)"] --> gRPCserverHandler
@@ -19,7 +19,7 @@ subgraph client
     clientApp(client app code) ---|call| stub
     clientApp(client app code) ---|async call| FutureStub
     clientApp(client app code) ---|call| BlockingStub
-    subgraph clientLib
+    subgraph client Lib
       stub --> gRPCClientInvoke(gRPC invokation)
       FutureStub --> gRPCClientInvoke
       BlockingStub --> gRPCClientInvoke
