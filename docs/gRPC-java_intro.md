@@ -60,6 +60,33 @@ Java的Interceptor實作範例：
 Google官方提供的Java程式語言使用gRPC函式庫，支援Oracle Java及Android client端Java使用：  
 [http://github.com/grpc/grpc-java](http://github.com/grpc/grpc-java)
 
+Javadoc: <http://www.grpc.io/grpc-java/javadoc/>
+
+專案整合Gradle建置時需要用這個protocol buffer的plugin  
+<https://github.com/google/protobuf-gradle-plugin>
+
+並建議加上這個設定，以便讓eclipse不會去對於protocol buffer產生的Java程式碼做太多無意義的語法檢查(目前protocol buffer產生的Java Code在JDK 8編譯的環境會有很多compile warning)：
+```Gradle
+apply plugin: 'eclipse'
+//remove redundant compile check on generated code.
+eclipse {
+	classpath {
+		file {
+			whenMerged {
+				entries.each {
+					source ->
+					if (source.kind == 'src' && source.path.contains('protoGeneratedSrcFolder')) {
+						source.entryAttributes['ignore_optional_problems'] = 'true'
+					}
+
+				}
+			}
+		}
+	}
+}
+
+```
+
 
 ## grpc-spring-boot-starter ##
 
