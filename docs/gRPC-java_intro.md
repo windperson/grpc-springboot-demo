@@ -71,21 +71,19 @@ Javadoc: <http://www.grpc.io/grpc-java/javadoc/>
 apply plugin: 'eclipse'
 //remove redundant compile check on generated code.
 eclipse {
-	classpath {
-		file {
-			whenMerged {
-				entries.each {
-					source ->
-					if (source.kind == 'src' && source.path.contains('protoGeneratedSrcFolder')) {
-						source.entryAttributes['ignore_optional_problems'] = 'true'
-					}
-
-				}
-			}
-		}
-	}
+  classpath {
+    file {
+      whenMerged {
+        entries.each {
+          source ->
+          if (source.kind == 'src' && source.path.contains('protoGeneratedSrcFolder')) {
+            source.entryAttributes['ignore_optional_problems'] = 'true'
+          }
+        }
+      }
+    }
+  }
 }
-
 ```
 
 並且加上這個清除產生程式碼的task以便讓gradle clean執行時能確實清除產生的Java程式碼檔案，否則在專案進行過程中修改 **.proto* 檔案時，重新產生的Java Code可能會產生奇怪的編譯錯誤：
@@ -97,7 +95,6 @@ task cleanProtoGen{
     }
 }
 clean.dependsOn cleanProtoGen
-
 ```
 
 gRPC-Java的軟體架構如下：
