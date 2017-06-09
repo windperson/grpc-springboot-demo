@@ -20,7 +20,7 @@ subgraph client
     clientApp(client app code) ---|async call| FutureStub
     clientApp(client app code) ---|call| BlockingStub
     subgraph client Lib
-      stub --> gRPCClientInvoke(gRPC invokation)
+      stub --> gRPCClientInvoke(gRPC invocation)
       FutureStub --> gRPCClientInvoke
       BlockingStub --> gRPCClientInvoke
       gRPCClientInvoke -.-> Channel
