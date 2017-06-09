@@ -2,7 +2,6 @@ syntax = "proto3";
 
 option java_package = "io.grpc.examples";
 
-
 message CalculatorRequest {
   double number1 = 1;
   double number2 = 2;
@@ -20,8 +19,7 @@ message CalculatorResponse {
   double result = 1;
 }
 
-
 service Calculator {
-  rpc Calculate(CalculatorRequest) returns (CalculatorResponse) {}
+  rpc Calculate(CalculatorRequest) returns (CalculatorResponse) {
+  }
 }
-
