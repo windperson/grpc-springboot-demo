@@ -62,10 +62,11 @@ Google官方提供的Java程式語言使用gRPC函式庫，支援Oracle Java及A
 
 Javadoc: <http://www.grpc.io/grpc-java/javadoc/>
 
-專案整合Gradle建置時需要用這個protocol buffer的plugin  
+專案整合Gradle建置時需要用這個protocol buffer的plugin:  
 <https://github.com/google/protobuf-gradle-plugin>
 
 並建議加上這個設定，以便讓eclipse不會去對於protocol buffer產生的Java程式碼做太多無意義的語法檢查(目前protocol buffer產生的Java Code在JDK 8編譯的環境會有很多compile warning)：
+
 ```Gradle
 apply plugin: 'eclipse'
 //remove redundant compile check on generated code.
@@ -87,6 +88,17 @@ eclipse {
 
 ```
 
+並且加上這個清除產生程式碼的task以便讓gradle clean執行時能確實清除產生的Java程式碼檔案，否則在專案進行過程中修改 **.proto* 檔案時，重新產生的Java Code可能會產生奇怪的編譯錯誤：
+
+```Gradle
+task cleanProtoGen{
+    doFirst{
+      delete("what ever the generated java source path is")
+    }
+}
+clean.dependsOn cleanProtoGen
+
+```
 
 ## grpc-spring-boot-starter ##
 
