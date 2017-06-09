@@ -46,7 +46,7 @@ Java的Interceptor實作範例：
     * gRPC Client Code：可在客戶端使用的gRPC呼叫用Proxy物件或Stub方法
 
 3. Server端實作程式碼  
-    1. 實作前一個步驟產生的gRPC服務介面定義方法/繼承Abstract Class並複寫宣告方
+    1. 實作前一個步驟產生的gRPC服務介面定義方法/繼承Abstract Class複寫宣告gRPC服務的函式。
     2. 建立server物件在專案中啟動的方法。
 
 4. Client端gRPC呼叫
@@ -99,6 +99,9 @@ task cleanProtoGen{
 clean.dependsOn cleanProtoGen
 
 ```
+
+gRPC-Java的軟體架構如下：
+
 
 ## grpc-spring-boot-starter ##
 
