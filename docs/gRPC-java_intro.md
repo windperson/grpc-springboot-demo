@@ -9,9 +9,10 @@
 
 gRPC server/client端官方函式庫支援多種程式語言，雖然各種程式語言的寫法會有所不同，但在函式庫以及文件之中會有幾種概念或術語，以下列出常見術語及其概念解釋(粗體字為官方文件中有提及的定義)：
 
-* **Channel** ：一層更高階包裝*連線到gRPC Server*的物件，可設定連線各種設定，在跑單元測試時有些語言的函式庫有提供"*in-Process* channel"以方便寫&執行測試。  
+* **Channel** ：一層更高階包裝 **連線到gRPC Server** 的物件，可設定連線各種設定，在跑單元測試時有些語言的函式庫有提供"*in-Process* channel"以方便寫&執行測試。  
 [http://www.grpc.io/docs/guides/concepts.html#channels](http://www.grpc.io/docs/guides/concepts.html#channels)
-* **Deadline/Timeout** ：
+* **Deadline/Timeout** ：定義gRPC服務呼叫可容許執行的時間，**Deadline** 表示總共可容許執行的時間完畢後的**時刻** ，**Timeout** 表示總共可容許執行多少**時間**  
+[http://www.grpc.io/docs/guides/concepts.html#deadlinestimeouts](http://www.grpc.io/docs/guides/concepts.html#deadlinestimeouts)
 * **Metadata** ：
 * **Streaming** :
 * Context ：
@@ -21,19 +22,22 @@ gRPC server/client端官方函式庫支援多種程式語言，雖然各種程�
 
 使用gRPC函式庫的工作流程如下：
 
-1. 建立敘述gRPC服務的 *.proto* DSL(Domain Specific Language)檔案  
+1. 建立敘述gRPC服務的 **.proto* DSL(Domain Specific Language)檔案  
 (或是在自己程式碼的資料model物件上加上gRPC函式庫提供該程式語言的annotation/attribute/decorator等等屬性設定)  
 撰寫由Protocol Buffer定義的RPC呼叫request/response資料格式和呼叫方法，目前gRPC用的是[Protocol Buffer version 3](https://developers.google.com/protocol-buffers/docs/proto3)
 ，也請參考Style Guide來做出合乎規範的RPC命名:
 [https://developers.google.com/protocol-buffers/docs/style](https://developers.google.com/protocol-buffers/docs/style)
-2. 從 *.proto* 檔產生出配合使用的程式語言的原始碼檔  
+
+2. 從 **.proto* 檔產生出配合使用的程式語言的原始碼檔  
 通常會有下列三種自動產生的程式碼：
     * Request/Resoponse Model：Protocol Buffer定義的訊息格式物件以及其建立和屬性存取方法。
     * gRPC Server Code：gRPC呼叫方法的Interface定義或是Abstract Class
     * gRPC Client Code：可在客戶端使用的gRPC呼叫用Proxy物件或Stub方法
+
 3. Server端實作程式碼  
     1. 實作前一個步驟產生的gRPC服務介面定義方法/繼承Abstract Class並複寫宣告方
     2. 建立server物件在專案中啟動的方法。
+
 4. Client端gRPC呼叫
     1. 在呼叫服務前可能需要做一些呼叫前的設定和參數組態物件的建立，由gRPC在該程式語言所提供的函式庫資源而定。
     2. 使用步驟3.產生的gRPC呼叫用Proxy物件或Stub方法，呼叫gRPC服務，
