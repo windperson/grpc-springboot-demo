@@ -99,7 +99,7 @@ clean.dependsOn cleanProtoGen
 
 gRPC-Java的軟體架構如下：
 
-![gRPC-Java Architect](https://cdn.rawgit.com/windperson/grpc-springboot-demo/de7c20f8/docs/grpc-java-arch.mmd.svg)
+![gRPC-Java Architect](https://cdn.rawgit.com/windperson/grpc-springboot-demo/92d15569/docs/grpc-java-arch.mmd.svg)
 
 ## grpc-spring-boot-starter ##
 
