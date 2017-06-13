@@ -43,7 +43,7 @@ public class DemoAppTest {
 
     @Before
     public void setup() {
-        channel = ManagedChannelBuilder.forAddress("localhost", 6565).usePlaintext(true).build();
+        channel = ManagedChannelBuilder.forAddress("localhost", 8889).usePlaintext(true).build();
     }
 
     @After
