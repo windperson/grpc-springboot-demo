@@ -65,7 +65,31 @@ Javadoc: <http://www.grpc.io/grpc-java/javadoc/>
 專案整合Gradle建置時需要用這個protocol buffer的plugin:  
 <https://github.com/google/protobuf-gradle-plugin>
 
-並建議加上這個設定，以便讓eclipse不會去對於protocol buffer產生的Java程式碼做太多無意義的語法檢查(目前protocol buffer產生的Java Code在JDK 8編譯的環境會有很多compile warning)：
+
+**注意**：一定要在generateProtoTasks裡面加上grpc的設定，否則只會產生Protocol Buffer的Java Code，不會產生gRPC的。
+
+```Gradle
+protobuf {
+    
+    // ... various settings ommitted ...
+
+    generateProtoTasks {
+        ofSourceSet('main').each { task ->
+            task.builtins {
+                java{
+                    outputSubDir = 'protoGen'
+                }
+            }
+            task.plugins {
+                grpc {  //this must be added
+                    outputSubDir = 'protoGen'
+                }
+            }
+    //... omitted ...
+    }
+```
+
+並建議加上下面這個設定，以便讓eclipse不會去對於protocol buffer產生的Java程式碼做太多無意義的語法檢查(目前protocol buffer產生的Java Code在JDK 8編譯的環境會有很多compile warning)：
 
 ```Gradle
 apply plugin: 'eclipse'
