@@ -77,12 +77,14 @@ protobuf {
     generatedFilesBaseDir = "$projectDir/src/"
 }
 
-task cleanProtoGen{
-    doFirst{
-      delete("$projectDir/src/main/protoGen")
-    }
+task cleanProto(type: Delete){
+  delete fileTree(
+    dir: "$projectDir/src/main/protoGen",
+    include: '**/*.java',
+    exclude: '.gitkeep'
+  )
 }
-clean.dependsOn cleanProtoGen
+clean.dependsOn cleanProto
 
 dependencyManagement {
     imports {
